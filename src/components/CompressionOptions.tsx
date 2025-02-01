@@ -24,11 +24,10 @@ export function CompressionOptions({
           {(["avif", "jpeg", "jxl", "png", "webp"] as const).map((format) => (
             <button
               key={format}
-              className={`px-4 py-2 rounded-md text-sm font-medium uppercase ${
-                outputType === format
+              className={`px-4 py-2 rounded-md text-sm font-medium uppercase ${outputType === format
                   ? "bg-blue-500 text-white"
                   : "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
-              }`}
+                }`}
               onClick={() => onOutputTypeChange(format)}
             >
               {format}
