@@ -1,3 +1,22 @@
+# media-compactor
+
+Media compactor will be an image and video compression tool that's easy to use and sets all the best defaults for minimal quality loss and great compression. It'll be build by leveraging the newest standards irregardless of support for opening these formats.
+Eg. It will use jpgxl even if your OS can't open it.
+
+The main goal is to preserve as much quality as possible in as little space as possible with 0 configuration
+
+## Goal tech-stack
+
+- Tauri for bundling into an app
+- pnpm package management
+- vite for bundling
+- wasm for compatible compression
+- native libraries like ffmpeg and jpegxl running natively for maximum performance
+
+## Target platforms
+
+- Desktop OSes
+
 # Squish 🎨
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
@@ -9,6 +28,7 @@ A modern, browser-based image compression tool that leverages WebAssembly for hi
 ## ✨ Features
 
 - 🖼️ Support for multiple image formats:
+
   - AVIF (AV1 Image Format)
   - JPEG (using MozJPEG)
   - JPEG XL
@@ -45,22 +65,26 @@ Squish is built with modern web technologies:
 ### Installation
 
 1. Clone the repository:
+
 ```bash
 git clone https://github.com/addyosmani/squish.git
 cd squish
 ```
 
 2. Install dependencies:
+
 ```bash
 npm install
 ```
 
 3. Start the development server:
+
 ```bash
 npm run dev
 ```
 
 4. Build for production:
+
 ```bash
 npm run build
 ```
