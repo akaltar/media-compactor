@@ -1,8 +1,8 @@
-import React from 'react';
-import { X, CheckCircle, AlertCircle, Loader2, Download } from 'lucide-react';
-import type { ImageFile } from '../types';
-import { formatFileSize } from '../utils/imageProcessing';
-import { downloadImage } from '../utils/download';
+import React from "react";
+import { X, CheckCircle, AlertCircle, Loader2, Download } from "lucide-react";
+import type { ImageFile } from "../types";
+import { formatFileSize } from "../utils/imageProcessing";
+import { downloadImage } from "../utils/download";
 
 interface ImageListProps {
   images: ImageFile[];
@@ -17,7 +17,7 @@ export function ImageList({ images, onRemove }: ImageListProps) {
       {images.map((image) => (
         <div
           key={image.id}
-          className="bg-white rounded-lg shadow-sm p-4 flex items-center gap-4"
+          className="bg-white dark:bg-gray-900 rounded-lg shadow-sm p-4 flex items-center gap-4"
         >
           {image.preview && (
             <img
@@ -28,14 +28,14 @@ export function ImageList({ images, onRemove }: ImageListProps) {
           )}
           <div className="flex-1 min-w-0">
             <div className="flex items-center justify-between">
-              <p className="text-sm font-medium text-gray-900 truncate">
+              <p className="text-sm font-medium text-gray-900 dark:text-gray-100 truncate">
                 {image.file.name}
               </p>
               <div className="flex items-center gap-2">
-                {image.status === 'complete' && (
+                {image.status === "complete" && (
                   <button
                     onClick={() => downloadImage(image)}
-                    className="text-gray-400 hover:text-gray-600"
+                    className="text-gray-400 hover:text-gray-600 dark:text-gray-600 dark:hover:text-gray-400"
                     title="Download"
                   >
                     <Download className="w-5 h-5" />
@@ -43,7 +43,7 @@ export function ImageList({ images, onRemove }: ImageListProps) {
                 )}
                 <button
                   onClick={() => onRemove(image.id)}
-                  className="text-gray-400 hover:text-gray-600"
+                  className="text-gray-400 hover:text-gray-600 dark:text-gray-600 dark:hover:text-gray-400"
                   title="Remove"
                 >
                   <X className="w-5 h-5" />
@@ -51,25 +51,23 @@ export function ImageList({ images, onRemove }: ImageListProps) {
               </div>
             </div>
             <div className="mt-1 flex items-center gap-2 text-sm text-gray-500">
-              {image.status === 'pending' && (
-                <span>Ready to process</span>
-              )}
-              {image.status === 'processing' && (
+              {image.status === "pending" && <span>Ready to process</span>}
+              {image.status === "processing" && (
                 <span className="flex items-center gap-2">
                   <Loader2 className="w-4 h-4 animate-spin" />
                   Processing...
                 </span>
               )}
-              {image.status === 'complete' && (
+              {image.status === "complete" && (
                 <span className="flex items-center gap-2 text-green-600">
                   <CheckCircle className="w-4 h-4" />
                   Complete
                 </span>
               )}
-              {image.status === 'error' && (
+              {image.status === "error" && (
                 <span className="flex items-center gap-2 text-red-600">
                   <AlertCircle className="w-4 h-4" />
-                  {image.error || 'Error processing image'}
+                  {image.error || "Error processing image"}
                 </span>
               )}
             </div>
@@ -77,8 +75,8 @@ export function ImageList({ images, onRemove }: ImageListProps) {
               {formatFileSize(image.originalSize)}
               {image.compressedSize && (
                 <>
-                  {' → '}
-                  {formatFileSize(image.compressedSize)}{' '}
+                  {" → "}
+                  {formatFileSize(image.compressedSize)}{" "}
                   <span className="text-green-600">
                     (
                     {Math.round(

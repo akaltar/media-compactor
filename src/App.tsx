@@ -1,16 +1,20 @@
-import React, { useState, useCallback } from 'react';
-import { Image, Trash2 } from 'lucide-react';
-import { CompressionOptions } from './components/CompressionOptions';
-import { DropZone } from './components/DropZone';
-import { ImageList } from './components/ImageList';
-import { DownloadAll } from './components/DownloadAll';
-import { useImageQueue } from './hooks/useImageQueue';
-import { DEFAULT_QUALITY_SETTINGS } from './utils/formatDefaults';
-import type { ImageFile, OutputType, CompressionOptions as CompressionOptionsType } from './types';
+import React, { useState, useCallback } from "react";
+import { Image, Trash2 } from "lucide-react";
+import { CompressionOptions } from "./components/CompressionOptions";
+import { DropZone } from "./components/DropZone";
+import { ImageList } from "./components/ImageList";
+import { DownloadAll } from "./components/DownloadAll";
+import { useImageQueue } from "./hooks/useImageQueue";
+import { DEFAULT_QUALITY_SETTINGS } from "./utils/formatDefaults";
+import type {
+  ImageFile,
+  OutputType,
+  CompressionOptions as CompressionOptionsType,
+} from "./types";
 
 export function App() {
   const [images, setImages] = useState<ImageFile[]>([]);
-  const [outputType, setOutputType] = useState<OutputType>('webp');
+  const [outputType, setOutputType] = useState<OutputType>("webp");
   const [options, setOptions] = useState<CompressionOptionsType>({
     quality: DEFAULT_QUALITY_SETTINGS.webp,
   });
@@ -19,34 +23,37 @@ export function App() {
 
   const handleOutputTypeChange = useCallback((type: OutputType) => {
     setOutputType(type);
-    if (type !== 'png') {
+    if (type !== "png") {
       setOptions({ quality: DEFAULT_QUALITY_SETTINGS[type] });
     }
   }, []);
 
-  const handleFilesDrop = useCallback((newImages: ImageFile[]) => {
-    // First add all images to state
-    setImages((prev) => [...prev, ...newImages]);
-    
-    // Use requestAnimationFrame to wait for render to complete
-    requestAnimationFrame(() => {
-      // Then add to queue after UI has updated
-      newImages.forEach(image => addToQueue(image.id));
-    });
-  }, [addToQueue]);
+  const handleFilesDrop = useCallback(
+    (newImages: ImageFile[]) => {
+      // First add all images to state
+      setImages((prev) => [...prev, ...newImages]);
+
+      // Use requestAnimationFrame to wait for render to complete
+      requestAnimationFrame(() => {
+        // Then add to queue after UI has updated
+        newImages.forEach((image) => addToQueue(image.id));
+      });
+    },
+    [addToQueue]
+  );
 
   const handleRemoveImage = useCallback((id: string) => {
     setImages((prev) => {
-      const image = prev.find(img => img.id === id);
+      const image = prev.find((img) => img.id === id);
       if (image?.preview) {
         URL.revokeObjectURL(image.preview);
       }
-      return prev.filter(img => img.id !== id);
+      return prev.filter((img) => img.id !== id);
     });
   }, []);
 
   const handleClearAll = useCallback(() => {
-    images.forEach(image => {
+    images.forEach((image) => {
       if (image.preview) {
         URL.revokeObjectURL(image.preview);
       }
@@ -70,18 +77,23 @@ export function App() {
     }
   }, [images]);
 
-  const completedImages = images.filter(img => img.status === 'complete').length;
+  const completedImages = images.filter(
+    (img) => img.status === "complete"
+  ).length;
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
       <div className="max-w-4xl mx-auto px-4 py-12">
         <div className="text-center mb-8">
           <div className="flex items-center justify-center gap-2 mb-4">
             <Image className="w-8 h-8 text-blue-500" />
-            <h1 className="text-3xl font-bold text-gray-900">Squish</h1>
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">
+              Squish
+            </h1>
           </div>
-          <p className="text-gray-600">
-            Compress and convert your images to AVIF, JPEG, JPEG XL, PNG, or WebP
+          <p className="text-gray-600 dark:text-gray-400">
+            Compress and convert your images to AVIF, JPEG, JPEG XL, PNG, or
+            WebP
           </p>
         </div>
 
@@ -96,13 +108,13 @@ export function App() {
           <DropZone onFilesDrop={handleFilesDrop} />
 
           {completedImages > 0 && (
-            <DownloadAll onDownloadAll={handleDownloadAll} count={completedImages} />
+            <DownloadAll
+              onDownloadAll={handleDownloadAll}
+              count={completedImages}
+            />
           )}
 
-          <ImageList 
-            images={images} 
-            onRemove={handleRemoveImage} 
-          />
+          <ImageList images={images} onRemove={handleRemoveImage} />
 
           {images.length > 0 && (
             <button
