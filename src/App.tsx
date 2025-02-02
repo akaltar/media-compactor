@@ -14,6 +14,9 @@ import type {
 import { FolderPicker } from "./components/FolderPicker";
 import { Intro } from "./components/Intro";
 
+import { readDir } from '@tauri-apps/plugin-fs';
+import { useReadFolderTree } from "./hooks/useReadFolderTree";
+
 export function App() {
   const [images, setImages] = useState<ImageFile[]>([]);
   const [outputType, setOutputType] = useState<OutputType>("webp");
@@ -68,9 +71,10 @@ export function App() {
   ).length;
 
   const [folder, setFolder] = useState<string | null>(null);
+  const folderTree = useReadFolderTree(folder);
 
   const renderFolderPicker = folder === null;
-  const renderProcessingStep = folder !== null;
+  const renderProcessingStep = folder !== null && folderTree === null;
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100">
@@ -89,6 +93,10 @@ export function App() {
 
         {
           renderProcessingStep ? (<p>Processing...</p>) : null
+        }
+
+        {
+          folderTree !== null ? (<p>{JSON.stringify(folderTree)}</p>) : null
         }
 
 
